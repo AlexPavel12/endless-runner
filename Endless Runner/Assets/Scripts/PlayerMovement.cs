@@ -39,15 +39,11 @@ public class PlayerMovement : MonoBehaviour
                 switch (currentSide)
                 {
                     case 0:
-                        controller.enabled = false;
-                        transform.position += sideRight;
-                        controller.enabled = true;
+                        MoveSides(sideRight);
                         currentSide = 1;
                         break;
                     case 1:
-                        controller.enabled = false;
-                        transform.position += sideRight;
-                        controller.enabled = true;
+                        MoveSides(sideRight);
                         currentSide = 2;
                         break;
                     case 2:
@@ -62,15 +58,11 @@ public class PlayerMovement : MonoBehaviour
                     case 0:
                         return;
                     case 1:
-                        controller.enabled = false;
-                        transform.position += sideLeft;
-                        controller.enabled = true;
+                        MoveSides(sideLeft);
                         currentSide = 0;
                         break;
                     case 2:
-                        controller.enabled = false;
-                        transform.position += sideLeft;
-                        controller.enabled = true;
+                        MoveSides(sideLeft);
                         currentSide = 1;
                         break;
                 }
@@ -82,5 +74,12 @@ public class PlayerMovement : MonoBehaviour
         {
             changeSides = true;
         }
+    }
+
+    private void MoveSides(Vector3 side)
+    {
+        controller.enabled = false;
+        transform.position += side;
+        controller.enabled = true;
     }
 }
