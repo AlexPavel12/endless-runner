@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         {
             deltaX = Input.mousePosition.x - prevX;
 
-            if (deltaX > 0.1f)
+            if (deltaX > 150f)
             {
                 switch (currentSide)
                 {
@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 changeSides = false;
             }
-            else if (deltaX < -0.1f)
+            else if (deltaX < -150f)
             {
                 switch (currentSide)
                 {
