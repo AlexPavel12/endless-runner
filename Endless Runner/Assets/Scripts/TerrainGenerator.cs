@@ -5,7 +5,7 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private GameObject terrain;
     [SerializeField] private Transform terrainHolder;
 
-    private Vector3 spawnPosition;
+    private Vector3 spawnPosition = new Vector3(0, 0, 15);
 
     private void Start()
     {

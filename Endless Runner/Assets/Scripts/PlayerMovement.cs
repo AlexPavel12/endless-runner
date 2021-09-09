@@ -5,32 +5,32 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CharacterController controller;
 
     [SerializeField] private Vector3 sideLeft, sideCenter, sideRight;
-    private Vector3 direction;
+    private Vector3 direction, desiredPosition;
 
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float forwardSpeed, sideSpeed;
     private float prevX, deltaX;
 
     [SerializeField] private int currentSide;
 
-    private bool changeSides;
+    private bool changeSides, sideMove, moveLeft, moveRight;
 
     private void Start()
     {
         currentSide = 1;
-        direction = Vector3.forward;
+        direction = Vector3.forward * forwardSpeed;
         changeSides = true;
     }
 
     private void Update()
     {
-        controller.Move(moveSpeed * Time.deltaTime * direction);
+        controller.Move(direction * Time.deltaTime);
 
         if (Input.GetMouseButtonDown(0))
         {
             prevX = Input.mousePosition.x;
         }
 
-        if (Input.GetMouseButton(0) && changeSides)
+        if (Input.GetMouseButton(0) && changeSides && !moveLeft && !moveRight)
         {
             deltaX = Input.mousePosition.x - prevX;
 
@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
                 switch (currentSide)
                 {
                     case 0:
-                        MoveSides(sideRight);
+                        MoveSides(sideCenter);
                         currentSide = 1;
                         break;
                     case 1:
@@ -62,11 +62,26 @@ public class PlayerMovement : MonoBehaviour
                         currentSide = 0;
                         break;
                     case 2:
-                        MoveSides(sideLeft);
+                        MoveSides(sideCenter);
                         currentSide = 1;
                         break;
                 }
                 changeSides = false;
+            }
+        }
+
+        if (sideMove)
+        {
+            if ((moveRight && transform.position.x > desiredPosition.x) || (moveLeft && transform.position.x < desiredPosition.x))
+            {
+                direction = Vector3.forward * forwardSpeed;
+                controller.enabled = false;
+                transform.position = new Vector3(desiredPosition.x, transform.position.y, transform.position.z);
+                controller.enabled = true;
+                sideMove = false;
+                moveLeft = false;
+                moveRight = false;
+                print("moved");
             }
         }
 
@@ -78,9 +93,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveSides(Vector3 side)
     {
-        controller.enabled = false;
-        transform.position += side;
-        controller.enabled = true;
+        sideMove = true;
+        desiredPosition = side;
+        if (desiredPosition.x < transform.position.x)
+        {
+            moveLeft = true;
+            direction = new Vector3(-1 * sideSpeed, 0, 1 * forwardSpeed);
+        }
+        else if(desiredPosition.x > transform.position.x)
+        {
+            moveRight = true;
+            direction = new Vector3(1 * sideSpeed, 0, 1 * forwardSpeed);
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
