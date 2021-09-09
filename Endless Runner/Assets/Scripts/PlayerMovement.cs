@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float forwardSpeed, sideSpeed;
     private float prevX, deltaX;
+    private float zUnits;
 
     [SerializeField] private int currentSide;
 
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         currentSide = 1;
+        zUnits = 1;
         direction = Vector3.forward * forwardSpeed;
         changeSides = true;
     }
@@ -24,6 +26,12 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         controller.Move(direction * Time.deltaTime);
+
+        if (transform.position.z > zUnits)
+        {
+            GameManager.instance.Score++;
+            zUnits += 1;
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -81,7 +89,6 @@ public class PlayerMovement : MonoBehaviour
                 sideMove = false;
                 moveLeft = false;
                 moveRight = false;
-                print("moved");
             }
         }
 
