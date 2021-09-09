@@ -82,4 +82,12 @@ public class PlayerMovement : MonoBehaviour
         transform.position += side;
         controller.enabled = true;
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Obstacle"))
+        {
+            GameManager.instance.Defeat();
+        }
+    }
 }

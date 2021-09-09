@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public UIManager uiManager;
 
     private void Awake()
     {
@@ -14,5 +15,10 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void Defeat()
+    {
+        uiManager.Defeat();
     }
 }
